@@ -10,6 +10,11 @@ FROM caddy:${CADDY_VERSION:+${CADDY_VERSION}-}builder AS builder
 
 RUN xcaddy build \
     --with github.com/caddy-dns/route53${ROUTE53_VERSION:+@$ROUTE53_VERSION}
+    --with github.com/mholt/caddy-events-exec
+
+FROM caddy:2-alpine
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 FROM caddy:${CADDY_VERSION:+${CADDY_VERSION}-}alpine
 
